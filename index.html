@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>전동현 키우기: 연대기 에디션</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+
+        <div id="top-bar">
+            <div class="year-badge">📅 <span id="current-year">2017</span>년</div>
+            <div class="res-box">💰 <span id="my-money">250</span>만</div>
+            <div class="res-box">🤝 <span id="intimacy">50</span></div>
+            <div class="res-box">💪 <span id="dh-esteem">50</span></div>
+            <div class="res-box">🪙 <span id="dh-money">0</span>만</div>
+            <div class="res-box">⏳ <span id="action-turns">32</span></div>
+            <span id="save-indicator" title="자동 저장됨">💾</span>
+        </div>
+
+        <div id="right-menu">
+            <button class="side-btn" onclick="openGiftModal()">🎁 선물</button>
+            <button class="side-btn" onclick="openAttendanceModal()">📅 출석</button>
+            <button class="side-btn" onclick="openMissionModal()">⭐ 미션</button>
+            <button class="side-btn" onclick="openLogModal()">📖 일지</button>
+        </div>
+
+        <div id="character-view">
+            <img id="dh-image" src="images/부탁하는_전동현.png" alt="전동현">
+        </div>
+
+        <div id="visual-novel-box">
+            <div class="speaker-name" id="speaker-title">진행 상황</div>
+            <div id="situation-text" class="dialogue-text">게임을 시작합니다. 하단의 장소 버튼을 눌러 스토리를 진행하세요!</div>
+        </div>
+
+        <div id="interaction-panel">
+            <div id="choices-container"></div>
+
+            <div id="chat-panel" style="display:none;">
+                <div id="kakao-box">
+                    <div id="kakao-chat-content" class="kakao-bubble"></div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="user-chat-input" placeholder="답장을 입력하세요...">
+                    <button onclick="submitChatAnswer()" class="action-btn">전송</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="bottom-nav">
+            <button class="nav-btn" id="nav-chat" onclick="enterLocation('chat')">💬 카톡</button>
+            <button class="nav-btn" id="nav-alba" onclick="enterLocation('alba')">☕ 알바/학업</button>
+            <button class="nav-btn" id="nav-home" onclick="enterLocation('home')">🏠 숙소/집</button>
+            <button class="nav-btn" id="nav-special" onclick="enterLocation('special')">🌟 특별만남</button>
+            <button class="nav-btn next-year-btn" onclick="forceNextYear()">⏩ 다음 연도</button>
+        </div>
+
+    </div>
+
+    <div id="game-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h3 id="modal-title">알림</h3>
+            <p id="modal-message">내용</p>
+            <button onclick="closeModal()" class="action-btn" style="margin-top:15px; width:100%;">확인</button>
+        </div>
+    </div>
+
+    <div id="menu-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h3 id="menu-modal-title">메뉴</h3>
+            <div id="menu-modal-body" style="margin: 15px 0; text-align: left; font-size: 13px;"></div>
+            <button onclick="closeMenuModal()" class="action-btn" style="width:100%;">닫기</button>
+        </div>
+    </div>
+
+    <div id="continue-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <h3>💾 이어하기</h3>
+            <p>이전에 저장된 게임 데이터가 있습니다. 이어서 진행하시겠습니까?</p>
+            <button onclick="continueSavedGame()" class="action-btn" style="width:100%; margin-bottom:8px;">이어하기</button>
+            <button onclick="startNewGame()" class="action-btn" style="width:100%; background:#7f8c8d;">새로 시작하기</button>
+        </div>
+    </div>
+
+<div id="intro-modal" class="modal-overlay" style="display:none;">
+            <div class="modal-content" style="max-width: 340px; text-align: left;">
+                <h3 style="text-align: center;">📖 전동현 키우기 가이드</h3>
+                <p style="font-size: 11.5px; line-height: 1.4;">
+                    <b>💰 내 돈:</b> 이벤트 선택 및 선물 구매 시 소모됩니다.<br>
+                    <b>🤝 친밀도:</b> 관계 점수 (너무 낮으면 손절, 높으면 기생충 위험)<br>
+                    <b>💪 자존감:</b> 동현이의 정신 상태 (너무 높거나 낮으면 위험)<br>
+                    <b>🪙 동현 자산:</b> 동현이가 모은 자산<br>
+                    <b>⏳ 남은 턴:</b> 전체 행동 가능 횟수<br><br>
+                    💡 <b>자금 수급 안내:</b> 자금은 우측 메뉴의 출석 체크(+10만 원), 미션 달성, 또는 이벤트 선택지를 통해 관리할 수 있습니다!
+                </p>
+                <label style="font-size: 12px; font-weight: bold;">플레이어 이름 입력:</label>
+                <input type="text" id="player-name-input" value="친구" style="width: 100%; padding: 6px; margin: 8px 0 12px 0; box-sizing: border-box; font-size: 12px;">
+                <button onclick="submitPlayerName()" class="action-btn" style="width: 100%;">게임 시작하기</button>
+            </div>
+        </div>
+
+    <script src="gamedata.js"></script>
+    <script src="extradata.js"></script>
+    <script src="gamestate.js"></script>
+    <script src="simengine.js"></script>
+    <script src="uicontroller.js"></script>
+</body>
+</html>
